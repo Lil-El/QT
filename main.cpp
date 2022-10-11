@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <QLabel>
 
 int main(int argc, char *argv[])
 {
@@ -29,7 +30,34 @@ int main(int argc, char *argv[])
         w->show();  //展示窗口
         return a.exec();
     */
+
+    /**
+     * Qt 也是支持 HTML 解析的。
+     * QLabel label("<h1><font color='red'>Hello</font> <span style='color: green;'>World</span>!</h1>");
+     * label.show();
+     *
+     * 也可以直接展示Label，不用MainWindow对象
+     * QLabel *label = new QLabel("Hello"); label->show();
+     */
+
     MainWindow w;
     w.show();
     return a.exec();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
