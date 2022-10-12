@@ -7,6 +7,8 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+// 单一继承：继承QMainWindow，将Ui::MainWindow作为成员变量
+// TODO: 也可以使用多重继承：继承QmainWindow, Ui::MainWindow
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -14,6 +16,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+// QT槽函数
+private slots:
+    void on_button_exit_clicked();
 
 private:
     Ui::MainWindow *ui;
