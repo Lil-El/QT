@@ -33,7 +33,7 @@
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
     <property name="text">
-     <string>Exit</string>
+     <string>退出</string>
     </property>
     <property name="checkable">
      <bool>false</bool>

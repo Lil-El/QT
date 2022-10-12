@@ -12,7 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     //    https://www.w3cschool.cn/learnroadqt/edlr1j3y.html 手动连接信号、槽connect
-    //    cout << (ui->button_exit) << endl;
 }
 
 MainWindow::~MainWindow()
@@ -24,6 +23,13 @@ MainWindow::~MainWindow()
 // QT内部处理connect信号和槽的连接方式：on_[name]_clicked()
 void MainWindow::on_button_exit_clicked()
 {
-    cout << "Exit..." << endl;
+    QString qs = u8"即将退出";
+    qDebug() << "click button: " << ((ui->button_exit->objectName()).toStdString().data());
+    // 使用toLocal8Bit()处理中文乱码
+    // qstring.cpp: D:\Program_Files\Qt\6.4.0\Src\qtbase\src\corelib\text
+    cout << qs.toLocal8Bit().toStdString().data() << endl;
+
+    // qApp宏是QApplication的实例
+    qApp->quit();
 }
 
