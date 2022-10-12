@@ -18,3 +18,8 @@
 
 - 工具->Git-> Remote.. -> 设置git地址：name：origin，url：https://github.com/Lil-El/QT.git （fetch，pull，push）
 - 工具->Git-> Remote.. -> commit文件
+
+## Plugin
+
+- Help->关于插件->勾选格式化、Beautifier的插件，并重启
+- [参考](https://blog.csdn.net/qq_35976351/article/details/85037645)
