@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSignalMapper>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -11,17 +12,23 @@ QT_END_NAMESPACE
 // TODO: 也可以使用多重继承：继承QmainWindow, Ui::MainWindow
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+MainWindow(QWidget *parent = nullptr);
+~MainWindow();
 
 // QT槽函数
 private slots:
-    void on_button_exit_clicked();
+// 自定义connect
+void custom_click_listener(int a);
+void custom_click_listener2();
+// QT自动connect
+void on_button_exit_clicked();
 
 private:
-    Ui::MainWindow *ui;
+Ui::MainWindow *ui;
+QSignalMapper *sp;
+
 };
 #endif // MAINWINDOW_H

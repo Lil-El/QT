@@ -11,7 +11,20 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //    https://www.w3cschool.cn/learnroadqt/edlr1j3y.html 手动连接信号、槽connect
+
+    // 槽函数需要参数时，参数必须来自于信号函数的参数。
+    connect(ui->button_exit, SIGNAL(clicked()), this, SLOT(custom_click_listener2()), Qt::DirectConnection);
+
+    // 使用Lambda表达式，不可以使用SIGNAL和SLOT
+    connect(ui->button_exit, &QPushButton::clicked, this, [=]{
+        custom_click_listener(1);
+    }, Qt::AutoConnection);
+
+    // 使用QSignalMapper进行转发，传递参数
+    sp = new QSignalMapper();
+    connect(ui->button_exit, SIGNAL(clicked()), sp, SLOT(map()));
+    sp->setMapping(ui->button_exit, 9);
+    connect(sp, SIGNAL(mappedInt(int)), this, SLOT(custom_click_listener(int)));
 }
 
 MainWindow::~MainWindow()
@@ -23,8 +36,8 @@ MainWindow::~MainWindow()
 // QT内部处理connect信号和槽的连接方式：on_[name]_clicked()
 void MainWindow::on_button_exit_clicked()
 {
-    QString qs = u8"即将退出";
-    qDebug() << "click button: " << ((ui->button_exit->objectName()).toStdString().data());
+    QString qs = u8"事件：自动connect";
+    qDebug() << "click button:" << ((ui->button_exit->objectName()).toStdString().data());
     // 使用toLocal8Bit()处理中文乱码
     // qstring.cpp: D:\Program_Files\Qt\6.4.0\Src\qtbase\src\corelib\text
     cout << qs.toLocal8Bit().toStdString().data() << endl;
@@ -33,3 +46,9 @@ void MainWindow::on_button_exit_clicked()
     qApp->quit();
 }
 
+void MainWindow::custom_click_listener(int a) {
+    cout << QString(u8"事件：有参数").toLocal8Bit().toStdString().data() << a << endl;
+}
+void MainWindow::custom_click_listener2() {
+    cout << QString(u8"事件：无参数").toLocal8Bit().toStdString().data() << endl;
+}
