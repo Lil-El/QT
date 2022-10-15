@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("我的QT");
 
     // 槽函数需要参数时，参数必须来自于信号函数的参数。
     connect(ui->button_exit, SIGNAL(clicked()), this, SLOT(custom_click_listener2()), Qt::DirectConnection);
@@ -25,11 +26,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->button_exit, SIGNAL(clicked()), sp, SLOT(map()));
     sp->setMapping(ui->button_exit, 9);
     connect(sp, SIGNAL(mappedInt(int)), this, SLOT(custom_click_listener(int)));
+
+    connect(this, SIGNAL(my_signal()), this, SLOT(custom_trigger_fn()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete sp;
+    delete child_window;
 }
 
 // TODO: https://zhuanlan.zhihu.com/p/265341090
@@ -42,6 +47,9 @@ void MainWindow::on_button_exit_clicked()
     // qstring.cpp: D:\Program_Files\Qt\6.4.0\Src\qtbase\src\corelib\text
     cout << qs.toLocal8Bit().toStdString().data() << endl;
 
+    // 手动触发自定义信号
+    emit my_signal();
+
     // qApp宏是QApplication的实例
     qApp->quit();
 }
@@ -51,4 +59,16 @@ void MainWindow::custom_click_listener(int a) {
 }
 void MainWindow::custom_click_listener2() {
     cout << QString(u8"事件：无参数").toLocal8Bit().toStdString().data() << endl;
+}
+void MainWindow::custom_trigger_fn() {
+    cout << QString(u8"trigger").toLocal8Bit().toStdString().data() << endl;
+}
+void MainWindow::on_button_jump_clicked() {
+    cout << "Jump: " << (child_window) << endl;
+    // TODO: 有了就不重新创建了
+    if(child_window) return;
+    else {
+        child_window = new MyWindow; // Ui::MyWindow需要引入ui_mywindow.h，而不是mywindow.h
+        child_window->show();
+    }
 }

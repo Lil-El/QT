@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
         w->show();  //展示窗口
         return a.exec();
-    */
+     */
 
     /**
      * Qt 也是支持 HTML 解析的。

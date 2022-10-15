@@ -10,13 +10,16 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    mywindow.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    mywindow.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    mywindow.ui
 
 TRANSLATIONS += \
     hello_zh_CN.ts

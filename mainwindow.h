@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSignalMapper>
+#include "mywindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,17 +19,23 @@ public:
 MainWindow(QWidget *parent = nullptr);
 ~MainWindow();
 
+Q_SIGNAL
+void my_signal();
+
 // QT槽函数
-private slots:
+private slots: // Q_SLOT
 // 自定义connect
 void custom_click_listener(int a);
 void custom_click_listener2();
+void custom_trigger_fn();
 // QT自动connect
 void on_button_exit_clicked();
+void on_button_jump_clicked();
 
 private:
 Ui::MainWindow *ui;
 QSignalMapper *sp;
+MyWindow *child_window;
 
 };
 #endif // MAINWINDOW_H
