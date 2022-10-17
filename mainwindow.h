@@ -33,9 +33,9 @@ void on_button_exit_clicked();
 void on_button_jump_clicked();
 
 private:
-Ui::MainWindow *ui;
-QSignalMapper *sp;
-MyWindow *child_window;
+Ui::MainWindow *ui = nullptr;
+QSignalMapper *sp = nullptr;
+MyWindow *child_window = nullptr;
 
 };
 #endif // MAINWINDOW_H

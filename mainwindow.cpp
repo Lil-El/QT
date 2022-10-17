@@ -4,6 +4,7 @@
 // 对Ui::MainWindow定义，在编译时会mainwindow.ui编译为ui_*.h文件
 #include "ui_mainwindow.h"
 #include <iostream>
+#include <QTimer>
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -64,11 +65,14 @@ void MainWindow::custom_trigger_fn() {
     cout << QString(u8"trigger").toLocal8Bit().toStdString().data() << endl;
 }
 void MainWindow::on_button_jump_clicked() {
-    cout << "Jump: " << (child_window) << endl;
-    // TODO: 有了就不重新创建了
-    if(child_window) return;
-    else {
+    if(child_window == nullptr) {
         child_window = new MyWindow; // Ui::MyWindow需要引入ui_mywindow.h，而不是mywindow.h
-        child_window->show();
+        QTimer timer;
+        // https://blog.csdn.net/weixin_44618297/article/details/123503876
+        timer.start(3000);
     }
+    cout << boolalpha << (typeid(*child_window) == typeid(MyWindow)) << endl;
+    cout << boolalpha << child_window->isEnabled() << endl;
+    cout << boolalpha << child_window->isVisible() << endl;
+    child_window->show();
 }

@@ -19,6 +19,10 @@ public:
 MyWindow(QWidget *parent = nullptr);
 ~MyWindow();
 
+private slots:
+void on_spinBox_valueChanged(int arg1);
+void on_horizontalSlider_sliderMoved(int position);
+
 private:
 Ui::MyWindow *ui;
 };
