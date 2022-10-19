@@ -18,6 +18,7 @@ Q_OBJECT
 public:
 MainWindow(QWidget *parent = nullptr);
 ~MainWindow();
+virtual void timerEvent(QTimerEvent*);
 
 Q_SIGNAL
 void my_signal();
@@ -33,6 +34,7 @@ void on_button_exit_clicked();
 void on_button_jump_clicked();
 
 private:
+int timerID1 = NULL;
 Ui::MainWindow *ui = nullptr;
 QSignalMapper *sp = nullptr;
 MyWindow *child_window = nullptr;

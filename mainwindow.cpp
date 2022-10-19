@@ -36,6 +36,10 @@ MainWindow::~MainWindow()
     delete ui;
     delete sp;
     delete child_window;
+    if(this->timerID1) {
+        cout << "kill timer: " << this->timerID1 << endl;
+        killTimer(this->timerID1);
+    }
 }
 
 // TODO: https://zhuanlan.zhihu.com/p/265341090
@@ -67,12 +71,25 @@ void MainWindow::custom_trigger_fn() {
 void MainWindow::on_button_jump_clicked() {
     if(child_window == nullptr) {
         child_window = new MyWindow; // Ui::MyWindow需要引入ui_mywindow.h，而不是mywindow.h
-        QTimer timer;
-        // https://blog.csdn.net/weixin_44618297/article/details/123503876
-        timer.start(3000);
+        // 定时器使用方式1：直接QObject::startTimer，每个2000毫秒后自动调用timerEvent；
+        this->timerID1 = startTimer(2000);
+        // 定时器使用方式2: 创建timer，监听timeout信号
+        QTimer *timer = new QTimer(this);
+        timer->start(5000);
+        connect(timer, &QTimer::timeout, this, [=](){
+            static int count = 0;
+            count++;
+            cout << "timer2 is timeout" << endl;
+            if(count == 3) {
+                timer->stop();
+                killTimer(timer->timerId());
+            }
+        });
+
     }
     cout << boolalpha << (typeid(*child_window) == typeid(MyWindow)) << endl;
-    cout << boolalpha << child_window->isEnabled() << endl;
-    cout << boolalpha << child_window->isVisible() << endl;
     child_window->show();
+}
+void MainWindow::timerEvent(QTimerEvent *ev) {
+    cout << ev->timerId() << " vs " << this->timerID1 << endl;
 }
