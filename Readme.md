@@ -23,3 +23,11 @@
 
 - Help->关于插件->勾选格式化、Beautifier的插件，并重启
 - [参考](https://blog.csdn.net/qq_35976351/article/details/85037645)
+
+## TODO
+
+- https://blog.csdn.net/SwordArcher/article/details/81560401
+- https://www.w3cschool.cn/learnroadqt/m4x21j43.html
+- https://zhuanlan.zhihu.com/p/450087085
+- https://www.runoob.com/w3cnote/cpp-std-thread.html
+- https://blog.csdn.net/qq_20853741/article/details/114093265

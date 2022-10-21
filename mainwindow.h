@@ -18,7 +18,8 @@ Q_OBJECT
 public:
 MainWindow(QWidget *parent = nullptr);
 ~MainWindow();
-virtual void timerEvent(QTimerEvent*);
+virtual void timerEvent(QTimerEvent*) override;
+void init();
 
 Q_SIGNAL
 void my_signal();
@@ -32,9 +33,14 @@ void custom_trigger_fn();
 // QT自动connect
 void on_button_exit_clicked();
 void on_button_jump_clicked();
+void on_DateButton_clicked();
+void on_DateButton_2_clicked();
 
 private:
 int timerID1 = NULL;
+QTimer *timerID2 = nullptr;
+bool isDateFlag = true;
+bool isDateFlag_2 = true;
 Ui::MainWindow *ui = nullptr;
 QSignalMapper *sp = nullptr;
 MyWindow *child_window = nullptr;

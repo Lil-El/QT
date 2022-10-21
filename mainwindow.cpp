@@ -5,6 +5,7 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <QTimer>
+#include <QDateTime>
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -29,6 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sp, SIGNAL(mappedInt(int)), this, SLOT(custom_click_listener(int)));
 
     connect(this, SIGNAL(my_signal()), this, SLOT(custom_trigger_fn()));
+
+    init();
 }
 
 MainWindow::~MainWindow()
@@ -37,8 +40,12 @@ MainWindow::~MainWindow()
     delete sp;
     delete child_window;
     if(this->timerID1) {
-        cout << "kill timer: " << this->timerID1 << endl;
+        cout << "kill timer: " << endl;
         killTimer(this->timerID1);
+    }
+    if(this->timerID2 != nullptr) {
+        cout << "kill timer2: " << endl;
+        killTimer(this->timerID2->timerId());
     }
 }
 
@@ -71,25 +78,42 @@ void MainWindow::custom_trigger_fn() {
 void MainWindow::on_button_jump_clicked() {
     if(child_window == nullptr) {
         child_window = new MyWindow; // Ui::MyWindow需要引入ui_mywindow.h，而不是mywindow.h
-        // 定时器使用方式1：直接QObject::startTimer，每个2000毫秒后自动调用timerEvent；
-        this->timerID1 = startTimer(2000);
-        // 定时器使用方式2: 创建timer，监听timeout信号
-        QTimer *timer = new QTimer(this);
-        timer->start(5000);
-        connect(timer, &QTimer::timeout, this, [=](){
-            static int count = 0;
-            count++;
-            cout << "timer2 is timeout" << endl;
-            if(count == 3) {
-                timer->stop();
-                killTimer(timer->timerId());
-            }
-        });
-
     }
     cout << boolalpha << (typeid(*child_window) == typeid(MyWindow)) << endl;
     child_window->show();
 }
 void MainWindow::timerEvent(QTimerEvent *ev) {
-    cout << ev->timerId() << " vs " << this->timerID1 << endl;
+    if(ev->timerId() == timerID1) {
+        if(isDateFlag) {
+            ui->DateString->setText(QDateTime::currentDateTime().toString());
+        } else {
+            killTimer(timerID1);
+        }
+    }
 }
+void MainWindow::init() {
+    // 定时器使用方式1：直接QObject::startTimer，每个2000毫秒后自动调用timerEvent；
+    this->timerID1 = startTimer(1000);
+    // 定时器使用方式2: 创建timer，监听timeout信号
+    timerID2 = new QTimer(this);
+    timerID2->start(1000);
+    connect(timerID2, &QTimer::timeout, this, [=](){
+        ui->DateString_2->setText(QDateTime::currentDateTime().toString());
+    });
+}
+
+void MainWindow::on_DateButton_clicked()
+{
+    isDateFlag = false;
+}
+// TODO: interval用法，QTimer的timerEvent，stop和kill区别；
+void MainWindow::on_DateButton_2_clicked()
+{
+    isDateFlag_2 = !isDateFlag_2;
+    if(isDateFlag_2) {
+        timerID2->start(1000);
+    } else {
+        timerID2->stop();
+    }
+}
+

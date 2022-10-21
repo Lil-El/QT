@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
      * 也可以直接展示Label，不用MainWindow对象
      * QLabel *label = new QLabel("Hello"); label->show();
      */
-
+    // 一个程序中只能有一个QMainWindow实例
     MainWindow w;
     w.show();
     return a.exec();
