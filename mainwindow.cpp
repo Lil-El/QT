@@ -75,6 +75,9 @@ void MainWindow::custom_click_listener2() {
 void MainWindow::custom_trigger_fn() {
     cout << QString(u8"trigger").toLocal8Bit().toStdString().data() << endl;
 }
+void MainWindow::custom_trigger_fn(const QString &qs) {
+    cout << qs.toLocal8Bit().toStdString().data() << endl;
+}
 void MainWindow::on_button_jump_clicked() {
     if(child_window == nullptr) {
         child_window = new MyWindow; // Ui::MyWindow需要引入ui_mywindow.h，而不是mywindow.h
@@ -129,4 +132,32 @@ void MainWindow::on_DateButton_2_clicked()
         timerID2->stop();
     }
 }
+
+
+void MainWindow::on_MDialogButton_clicked()
+{
+    mdialog = new MDialog;
+    mdialog->show();
+    connect(mdialog, SIGNAL(mdOK(const QString&)), this, SLOT(custom_trigger_fn(const QString&)));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QSignalMapper>
 #include "mywindow.h"
+#include "mdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,11 +31,14 @@ private slots: // Q_SLOT
 void custom_click_listener(int a);
 void custom_click_listener2();
 void custom_trigger_fn();
+void custom_trigger_fn(const QString &qs);
 // QT自动connect
 void on_button_exit_clicked();
 void on_button_jump_clicked();
 void on_DateButton_clicked();
 void on_DateButton_2_clicked();
+
+void on_MDialogButton_clicked();
 
 private:
 int timerID1 = NULL;
@@ -44,6 +48,7 @@ bool isDateFlag_2 = true;
 Ui::MainWindow *ui = nullptr;
 QSignalMapper *sp = nullptr;
 MyWindow *child_window = nullptr;
+MDialog *mdialog = nullptr;
 
 };
 #endif // MAINWINDOW_H

@@ -11,14 +11,17 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    mdialog.cpp \
     mywindow.cpp
 
 HEADERS += \
     mainwindow.h \
+    mdialog.h \
     mywindow.h
 
 FORMS += \
     mainwindow.ui \
+    mdialog.ui \
     mywindow.ui
 
 TRANSLATIONS += \
