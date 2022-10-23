@@ -85,7 +85,13 @@ void MainWindow::on_button_jump_clicked() {
 void MainWindow::timerEvent(QTimerEvent *ev) {
     if(ev->timerId() == timerID1) {
         if(isDateFlag) {
-            ui->DateString->setText(QDateTime::currentDateTime().toString());
+            // 不传入参数DateTime就是空的
+            QDateTime dt(QDateTime::currentDateTime());
+            QDate date = dt.date();
+            cout << QString("今天是：").toLocal8Bit().toStdString().data() << date.year() << "/" << date.month() << endl;
+            QDateTime dt1 = dt.addMonths(0);
+            QString dt_s = dt1.toString(QString("yyyy-MM-dd hh:mm:ss"));
+            ui->DateString->setText(dt_s);
         } else {
             killTimer(timerID1);
         }
