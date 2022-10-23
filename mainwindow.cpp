@@ -98,11 +98,18 @@ void MainWindow::timerEvent(QTimerEvent *ev) {
     }
 }
 void MainWindow::init() {
-    // 定时器使用方式1：直接QObject::startTimer，每个2000毫秒后自动调用timerEvent；
-    this->timerID1 = startTimer(1000);
-    // 定时器使用方式2: 创建timer，监听timeout信号
+    // 定时器使用方式1-QObject：直接QObject::startTimer，每个2000毫秒后自动调用timerEvent；
+//    this->timerID1 = startTimer(1000);
+    // 定时器使用方式2-QTimer: 创建timer，监听timeout信号
     timerID2 = new QTimer(this);
-    timerID2->start(1000);
+    timerID2->setInterval(1000); // 设置时间间隔，也可以直接start(间隔)设置间隔
+    timerID2->start(); // start启动定时器 stop停止定时器 再次start可以重启
+    cout << timerID2->interval() << endl;
+    // timeout回调1
+    timerID2->callOnTimeout([=](){
+        cout << "callOnTimeout" << endl;
+    });
+    // timeout回调2
     connect(timerID2, &QTimer::timeout, this, [=](){
         ui->DateString_2->setText(QDateTime::currentDateTime().toString());
     });
@@ -112,12 +119,12 @@ void MainWindow::on_DateButton_clicked()
 {
     isDateFlag = false;
 }
-// TODO: interval用法，QTimer的timerEvent，stop和kill区别；
 void MainWindow::on_DateButton_2_clicked()
 {
     isDateFlag_2 = !isDateFlag_2;
     if(isDateFlag_2) {
-        timerID2->start(1000);
+        timerID2->setInterval(3000);
+        timerID2->start();
     } else {
         timerID2->stop();
     }
