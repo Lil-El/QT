@@ -14,6 +14,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("我的QT");
+    this->setStatusTip(tr("It's status bar."));
+
+    // QMenu *file = menuBar()->addMenu(tr("&File"));
+    QAction *qa = new QAction("我的", this);
+    qa->setStatusTip("我的文件");
+    qa->setShortcuts(QKeySequence::Backspace);
+    ui->startMenu->addAction(qa);
+    connect(qa, SIGNAL(triggered()), this, SLOT(custom_trigger_action()));
+    ui->toolBar->addAction(qa);
+
 
     // 槽函数需要参数时，参数必须来自于信号函数的参数。
     connect(ui->button_exit, SIGNAL(clicked()), this, SLOT(custom_click_listener2()), Qt::DirectConnection);
@@ -132,7 +142,9 @@ void MainWindow::on_DateButton_2_clicked()
         timerID2->stop();
     }
 }
-
+void MainWindow::custom_trigger_action() {
+    cout << "open a file" << endl;
+}
 
 void MainWindow::on_MDialogButton_clicked()
 {

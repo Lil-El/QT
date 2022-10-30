@@ -32,6 +32,7 @@ void custom_click_listener(int a);
 void custom_click_listener2();
 void custom_trigger_fn();
 void custom_trigger_fn(const QString &qs);
+void custom_trigger_action();
 // QT自动connect
 void on_button_exit_clicked();
 void on_button_jump_clicked();
