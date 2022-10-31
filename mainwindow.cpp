@@ -6,6 +6,7 @@
 #include <iostream>
 #include <QTimer>
 #include <QDateTime>
+#include <QMessageBox>
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -14,8 +15,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("我的QT");
+    QLabel *label = new QLabel();
+    label->setText("QLabel");
+    ui->statusBar->setStyleSheet(QString("QStatusBar::item{border: 0px}"));
+    ui->statusBar->addWidget(label);
+    ui->statusBar->setSizeGripEnabled(false);
     this->setStatusTip(tr("It's status bar."));
 
+    // QAction 在ui_mainwindow.h中引入
     // QMenu *file = menuBar()->addMenu(tr("&File"));
     QAction *qa = new QAction("我的", this);
     qa->setStatusTip("我的文件");
@@ -143,7 +150,7 @@ void MainWindow::on_DateButton_2_clicked()
     }
 }
 void MainWindow::custom_trigger_action() {
-    cout << "open a file" << endl;
+    QMessageBox::warning(this, "标题", "打开文件...");
 }
 
 void MainWindow::on_MDialogButton_clicked()
