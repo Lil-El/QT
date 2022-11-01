@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QFileDialog>
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -22,11 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusBar->setSizeGripEnabled(false);
     this->setStatusTip(tr("It's status bar."));
 
-    // QAction 在ui_mainwindow.h中引入
-    // QMenu *file = menuBar()->addMenu(tr("&File"));
-    QAction *qa = new QAction("我的", this);
+    QAction *qa = new QAction("我的", this); // QAction 在ui_mainwindow.h中引入
     qa->setStatusTip("我的文件");
-    qa->setShortcuts(QKeySequence::Backspace);
+    QKeySequence ks = QKeySequence(Qt::CTRL|Qt::Key_P);
+    qa->setShortcut(ks); // setShortcut(s) => QKeySequence::Print ctrl+p, QKeySequence(tr("Ctrl+p"));
     ui->startMenu->addAction(qa);
     connect(qa, SIGNAL(triggered()), this, SLOT(custom_trigger_action()));
     ui->toolBar->addAction(qa);
@@ -150,7 +150,12 @@ void MainWindow::on_DateButton_2_clicked()
     }
 }
 void MainWindow::custom_trigger_action() {
-    QMessageBox::warning(this, "标题", "打开文件...");
+    QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Image Files(*.jpg *.png)"));
+    if(path.length() == 0) {
+        QMessageBox::warning(NULL, tr("Path"), tr("You didn't select any files."));
+    } else {
+        QMessageBox::information(NULL, tr("Path"), tr("You selected ") + path);
+    }
 }
 
 void MainWindow::on_MDialogButton_clicked()
