@@ -155,15 +155,23 @@ void MainWindow::on_DateButton_2_clicked()
     }
 }
 void MainWindow::custom_trigger_action() {
-    // 文件选择弹窗：获取文件名称、路径
+    // 文件选择弹窗-打开方式1：获取文件名称、路径
     // QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Mino (*.jpg *.png *.txt)"));
+    // 文件选择弹窗-打开方式2：
     QFileDialog fd(this, Qt::Drawer);
-//    fd.open(this, SLOT(custom_trigger_fn()));
-//    if(path.length() == 0) {
-//        QMessageBox::warning(NULL, tr("Path"), tr("You didn't select any files."));
-//    } else {
-//        QMessageBox::information(NULL, tr("Path"), tr("You selected ") + path);
-//    }
+    fd.setLabelText(QFileDialog::DialogLabel::FileName, QString("Mino Select File:"));
+    fd.setWindowTitle("打开潘多拉魔盒");
+    fd.exec();
+    //    fd.open(this, SLOT(custom_trigger_fn()));
+
+
+    //    if(path.length() == 0) {
+    //        QMessageBox::warning(NULL, tr("Path"), tr("You didn't select any
+    //        files."));
+    //    } else {
+    //        QMessageBox::information(NULL, tr("Path"), tr("You selected ") +
+    //        path);
+    //    }
 }
 
 void MainWindow::on_MDialogButton_clicked()
