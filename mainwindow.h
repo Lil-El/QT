@@ -22,11 +22,29 @@ MainWindow(QWidget *parent = nullptr);
 virtual void timerEvent(QTimerEvent*) override;
 void init();
 
-Q_SIGNAL
+/*
+ * Q_SIGNALS/Q_SLOTS/Q_EMIT代替signals、slots、emit
+ * 在第三方库这些关键字可能已经被使用了
+ *
+ * Q_SIGNAL和Q_SIGNAL区别：（Q_SLOT和Q_SLOTS区别）
+ *     这两个都是对signals的代替；
+ *     Q_SIGNAL是定义单个信号，不需要衔接冒号
+ *     Q_SIGNALS定义多个信号，需要衔接冒号
+*/
+Q_SIGNAL // Q_SIGNAL // Q_SIGNALS: // signals:
 void my_signal();
 
-// QT槽函数
-private slots: // Q_SLOT
+Q_SIGNAL
+void my_signal2(const QString &qs);
+
+/*
+ * 定义槽函数
+    public slots: 表示任何信号signal都可以和这个槽连接
+    private slots: 表示只有自己的信号可以和这个槽连接
+    protected slots: 表示只有自己和子类可和这个槽连接
+*/
+
+private Q_SLOTS: // private Q_SLOT // private slots:
 // 自定义connect
 void custom_click_listener(int a);
 void custom_click_listener2();

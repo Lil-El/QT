@@ -23,8 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusBar->setSizeGripEnabled(false);
     this->setStatusTip(tr("It's status bar."));
 
-    QAction *qa = new QAction("我的", this); // QAction 在ui_mainwindow.h中引入
-    qa->setStatusTip("我的文件");
+    QAction *qa = new QAction("打开文件", this); // QAction 在ui_mainwindow.h中引入
+    qa->setStatusTip("获取文件路径");
     QKeySequence ks = QKeySequence(Qt::CTRL|Qt::Key_P);
     qa->setShortcut(ks); // setShortcut(s) => QKeySequence::Print ctrl+p, QKeySequence(tr("Ctrl+p"));
     ui->startMenu->addAction(qa);
@@ -47,6 +47,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sp, SIGNAL(mappedInt(int)), this, SLOT(custom_click_listener(int)));
 
     connect(this, SIGNAL(my_signal()), this, SLOT(custom_trigger_fn()));
+    connect(this, SIGNAL(my_signal2(const QString&)), this, SLOT(custom_trigger_fn(const QString&)));
 
     init();
 }
@@ -76,8 +77,12 @@ void MainWindow::on_button_exit_clicked()
     // qstring.cpp: D:\Program_Files\Qt\6.4.0\Src\qtbase\src\corelib\text
     cout << qs.toLocal8Bit().toStdString().data() << endl;
 
-    // 手动触发自定义信号
-    emit my_signal();
+    /*
+     * Q_EMIT、emit：触发信号
+     * Q_EMIT代替emit；第三方库可能会使用emit，此时可以使用Q_EMIT代替去发送信号。
+    */
+    Q_EMIT my_signal();
+    emit my_signal2(QString("custom trigger my_signal2"));
 
     // qApp宏是QApplication的实例
     qApp->quit();
@@ -90,7 +95,7 @@ void MainWindow::custom_click_listener2() {
     cout << QString(u8"事件：无参数").toLocal8Bit().toStdString().data() << endl;
 }
 void MainWindow::custom_trigger_fn() {
-    cout << QString(u8"trigger").toLocal8Bit().toStdString().data() << endl;
+    cout << QString(u8"custom trigger my_signal").toLocal8Bit().toStdString().data() << endl;
 }
 void MainWindow::custom_trigger_fn(const QString &qs) {
     cout << qs.toLocal8Bit().toStdString().data() << endl;
@@ -150,12 +155,15 @@ void MainWindow::on_DateButton_2_clicked()
     }
 }
 void MainWindow::custom_trigger_action() {
-    QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Image Files(*.jpg *.png)"));
-    if(path.length() == 0) {
-        QMessageBox::warning(NULL, tr("Path"), tr("You didn't select any files."));
-    } else {
-        QMessageBox::information(NULL, tr("Path"), tr("You selected ") + path);
-    }
+    // 文件选择弹窗：获取文件名称、路径
+    // QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Mino (*.jpg *.png *.txt)"));
+    QFileDialog fd(this, Qt::Drawer);
+//    fd.open(this, SLOT(custom_trigger_fn()));
+//    if(path.length() == 0) {
+//        QMessageBox::warning(NULL, tr("Path"), tr("You didn't select any files."));
+//    } else {
+//        QMessageBox::information(NULL, tr("Path"), tr("You selected ") + path);
+//    }
 }
 
 void MainWindow::on_MDialogButton_clicked()
