@@ -14,6 +14,10 @@ MDialog::MDialog(QWidget *parent) : QDialog(parent), ui(new Ui::mdialog)
     connect(this, SIGNAL(mdOK(const QString&)), this, SLOT(onmdOK(const QString&)));
 }
 
+void MDialog::mousePressEvent(QMouseEvent *ev) {
+    cout << ev->x() << endl;
+}
+
 MDialog::~MDialog() {
     delete ui;
 }

@@ -156,7 +156,7 @@ void MainWindow::on_DateButton_2_clicked()
     }
 }
 void MainWindow::custom_trigger_action() {
-    // 文件选择弹窗-打开方式1：获取文件名称、路径
+    // 文件选择弹窗-打开方式1：static    => return结果
     // QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Mino (*.jpg *.png *.txt)"));
     //    if(path.length() == 0) {
     //        QMessageBox::warning(NULL, tr("Path"), tr("You didn't select any
@@ -165,22 +165,10 @@ void MainWindow::custom_trigger_action() {
     //        QMessageBox::information(NULL, tr("Path"), tr("You selected ") +
     //        path);
     //    }
-    // 文件选择弹窗-打开方式2：
+    // 文件选择弹窗-打开方式2：constructor  => exec()结果
     QFileDialog fd(this, Qt::Drawer);
     fd.setLabelText(QFileDialog::DialogLabel::FileName, QString("Mino Select File:"));
     fd.setWindowTitle("打开潘多拉魔盒");
-    // 获取选中的内容方式1：
-//    int dialogCode = fd.exec(); // exec是阻塞的，关闭时将结果赋给Accepted或Rejected
-//    if(dialogCode == QDialog::DialogCode::Accepted) {
-//        QList<QString> files = fd.selectedFiles();
-//        QMessageBox::information(NULL, tr("Path"), tr("You selected ") + files[0]);
-//    } else {
-//        QMessageBox::information(NULL, tr("Path"), tr("You didn't select any files."));
-//    }
-    // 获取选中的内容方式2：
-//    QFileDialog *fd1 = &fd;
-//    fd.open(this, SLOT(custom_trigger_fn())); // 文件打开时触发SLOT方法
-//    connect(fd1, SIGNAL(fileSelected(QString)), this, SLOT(custom_trigger_fn(QString))); // 文件打开触发该SLOT方法
 
     // Lambda悬空引用：引用了fd，当fd弹窗关闭之后就访问不到，程序crash；所以在关闭后要stop定时器；
     QTimer *timer = new QTimer();
@@ -196,8 +184,37 @@ void MainWindow::custom_trigger_action() {
     });
     // timerID2 stop了，再开一个定时器他们的id是一样的。使用killTImer就会报错。
     // 可以同时创建定时器，防止id重复
-    cout << "timer id is : " << timer->timerId() << endl;
-    fd.exec();
+    QString qs = QString("timer id is: %1").arg(timer->timerId());
+    qDebug() << qs;
+
+    int dialogCode = fd.exec(); // exec是阻塞的，关闭时将结果赋给Accepted或Rejected
+    if(dialogCode == QDialog::DialogCode::Accepted) {
+        QList<QString> files = fd.selectedFiles();
+        /*
+         * defaultButton：表示默认focus的button
+         * QMessageBox同QFileDialog类似：
+         *     1. 如果使用static函数打开box，阻塞并返回一个结果
+         *     2. 如果使用constructor，使用exec()，返回一个结果
+         */
+        QMessageBox::StandardButton sb = QMessageBox::information(NULL, tr("Path"), tr("You selected ") + files[0], QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+        if(sb == QMessageBox::Yes) {
+            cout << "u click Yes button." << endl;
+        }
+        if(sb == QMessageBox::No) {
+            cout << "u click No button." << endl;
+        }
+    } else {
+        QMessageBox mb(QMessageBox::Critical, tr("Path"), tr("You didn't select any files."), QMessageBox::No, NULL);
+        mb.setIconPixmap(QPixmap("img.png"));
+        if(mb.exec() == QMessageBox::No) {
+            cout << "u click No button." << endl;
+        }
+    }
+    // FileDialog监听
+    //    QFileDialog *fd1 = &fd;
+    //    fd.open(this, SLOT(custom_trigger_fn())); // 文件打开时触发SLOT方法
+    //    connect(fd1, SIGNAL(fileSelected(QString)), this, SLOT(custom_trigger_fn(QString))); // 文件打开触发该SLOT方法
+
     timer->stop();
 }
 

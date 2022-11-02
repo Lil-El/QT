@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QWidget>
+#include <QMouseEvent>
 
 namespace Ui {
 class mdialog;
@@ -15,6 +16,10 @@ Q_OBJECT
 public:
 MDialog(QWidget *parent = nullptr);
 ~MDialog();
+
+// override覆盖QWidget中定义的事件函数
+protected:
+void mousePressEvent(QMouseEvent *ev) override;
 
 signals:
 void mdOK(const QString&qs);
