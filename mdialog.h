@@ -17,7 +17,8 @@ public:
 MDialog(QWidget *parent = nullptr);
 ~MDialog();
 
-// override覆盖QWidget中定义的事件函数
+// TODO: 事件接收与忽略
+// override覆盖QWidget中virtual定义的事件函数
 protected:
 void mousePressEvent(QMouseEvent *ev) override;
 
