@@ -3,7 +3,9 @@
 
 #include <QDialog>
 #include <QWidget>
+#include <QEvent>
 #include <QMouseEvent>
+#include <QCloseEvent>
 
 namespace Ui {
 class mdialog;
@@ -16,11 +18,15 @@ Q_OBJECT
 public:
 MDialog(QWidget *parent = nullptr);
 ~MDialog();
+void registeMyEvent();
 
-// TODO: 事件接收与忽略
 // override覆盖QWidget中virtual定义的事件函数
 protected:
 void mousePressEvent(QMouseEvent *ev) override;
+void closeEvent(QCloseEvent *ev) override;
+bool event(QEvent *ev) override;
+bool eventFilter(QObject *obj, QEvent *ev) override;
+void customEvent(QEvent *ev) override;
 
 signals:
 void mdOK(const QString&qs);
