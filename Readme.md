@@ -16,7 +16,7 @@
 
 ## Git
 
-- 工具->Git-> Remote.. -> 设置git地址：name：origin，url：https://github.com/Lil-El/QT.git （fetch，pull，push）
+- 工具->Git-> Remote.. -> 设置git地址：name：origin，url：git@github.com/Lil-El/QT.git （fetch，pull，push）
 - 工具->Git-> Remote.. -> commit文件
 
 ## Plugin

@@ -80,7 +80,7 @@ void MainWindow::on_button_exit_clicked()
     /*
      * Q_EMIT、emit：触发信号
      * Q_EMIT代替emit；第三方库可能会使用emit，此时可以使用Q_EMIT代替去发送信号。
-    */
+     */
     Q_EMIT my_signal();
     emit my_signal2(QString("custom trigger my_signal2"));
 
@@ -132,12 +132,13 @@ void MainWindow::init() {
     cout << timerID2->interval() << endl;
     // timeout回调1
     timerID2->callOnTimeout([=](){
-        cout << "callOnTimeout" << endl;
+        cout << "callOnTimeout timer2 id is: " << timerID2->timerId() << endl;
     });
     // timeout回调2
     connect(timerID2, &QTimer::timeout, this, [=](){
         ui->DateString_2->setText(QDateTime::currentDateTime().toString());
     });
+    // signalShot只执行一次
 }
 
 void MainWindow::on_DateButton_clicked()
@@ -157,14 +158,6 @@ void MainWindow::on_DateButton_2_clicked()
 void MainWindow::custom_trigger_action() {
     // 文件选择弹窗-打开方式1：获取文件名称、路径
     // QString path = QFileDialog::getOpenFileName(this, tr("Open Image"), ".", tr("Mino (*.jpg *.png *.txt)"));
-    // 文件选择弹窗-打开方式2：
-    QFileDialog fd(this, Qt::Drawer);
-    fd.setLabelText(QFileDialog::DialogLabel::FileName, QString("Mino Select File:"));
-    fd.setWindowTitle("打开潘多拉魔盒");
-    fd.exec();
-    //    fd.open(this, SLOT(custom_trigger_fn()));
-
-
     //    if(path.length() == 0) {
     //        QMessageBox::warning(NULL, tr("Path"), tr("You didn't select any
     //        files."));
@@ -172,11 +165,47 @@ void MainWindow::custom_trigger_action() {
     //        QMessageBox::information(NULL, tr("Path"), tr("You selected ") +
     //        path);
     //    }
+    // 文件选择弹窗-打开方式2：
+    QFileDialog fd(this, Qt::Drawer);
+    fd.setLabelText(QFileDialog::DialogLabel::FileName, QString("Mino Select File:"));
+    fd.setWindowTitle("打开潘多拉魔盒");
+    // 获取选中的内容方式1：
+//    int dialogCode = fd.exec(); // exec是阻塞的，关闭时将结果赋给Accepted或Rejected
+//    if(dialogCode == QDialog::DialogCode::Accepted) {
+//        QList<QString> files = fd.selectedFiles();
+//        QMessageBox::information(NULL, tr("Path"), tr("You selected ") + files[0]);
+//    } else {
+//        QMessageBox::information(NULL, tr("Path"), tr("You didn't select any files."));
+//    }
+    // 获取选中的内容方式2：
+//    QFileDialog *fd1 = &fd;
+//    fd.open(this, SLOT(custom_trigger_fn())); // 文件打开时触发SLOT方法
+//    connect(fd1, SIGNAL(fileSelected(QString)), this, SLOT(custom_trigger_fn(QString))); // 文件打开触发该SLOT方法
+
+    // Lambda悬空引用：引用了fd，当fd弹窗关闭之后就访问不到，程序crash；所以在关闭后要stop定时器；
+    QTimer *timer = new QTimer();
+    timer->setInterval(3000);
+    timer->start();
+    timer->callOnTimeout([&](){
+        if(fd.isVisible()) {
+            QList<QString> list = fd.selectedFiles();
+            if(list.length()) {
+                qDebug() << "timer detench: " << list[0];
+            }
+        }
+    });
+    // timerID2 stop了，再开一个定时器他们的id是一样的。使用killTImer就会报错。
+    // 可以同时创建定时器，防止id重复
+    cout << "timer id is : " << timer->timerId() << endl;
+    fd.exec();
+    timer->stop();
 }
 
 void MainWindow::on_MDialogButton_clicked()
 {
-    mdialog = new MDialog;
+    // parent参数，可以保证在父级组件delete时，将子组件也删除掉；否则可能造成内存泄漏
+    // 不过程序关闭时，操作系统OS会回收所有内存
+    mdialog = new MDialog(this);
     mdialog->show();
     connect(mdialog, SIGNAL(mdOK(const QString&)), this, SLOT(custom_trigger_fn(const QString&)));
 }
