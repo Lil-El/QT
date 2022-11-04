@@ -17,6 +17,9 @@ public:
 explicit Paint(QWidget *parent = nullptr);
 ~Paint();
 
+protected:
+void paintEvent(QPaintEvent *event);
+
 private:
 Ui::Paint *ui;
 };
