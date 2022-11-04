@@ -47,5 +47,13 @@ void Paint::paintEvent(QPaintEvent *event) {
     p.drawEllipse(220, 50, 50, 50);
     // 渐变线
     p.setPen(QPen(QBrush(l), 5));
+    QTransform t;
+    t.rotate(-30.0);
+    p.setWorldTransform(t);
     p.drawLine(100, 100, 300, 300);
+    // viewport and window TODO:
+    t.rotate(0);
+    p.setWorldTransform(t);
+    p.setWindow(-50, -50, 50, 50);
+    p.drawLine(-30, -20, 10, 20);
 }
