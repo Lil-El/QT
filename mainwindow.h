@@ -5,6 +5,7 @@
 #include <QSignalMapper>
 #include "mywindow.h"
 #include "mdialog.h"
+#include "paint.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,7 +31,7 @@ void init();
  *     这两个都是对signals的代替；
  *     Q_SIGNAL是定义单个信号，不需要衔接冒号
  *     Q_SIGNALS定义多个信号，需要衔接冒号
-*/
+ */
 Q_SIGNAL // Q_SIGNAL // Q_SIGNALS: // signals:
 void my_signal();
 
@@ -42,7 +43,7 @@ void my_signal2(const QString &qs);
     public slots: 表示任何信号signal都可以和这个槽连接
     private slots: 表示只有自己的信号可以和这个槽连接
     protected slots: 表示只有自己和子类可和这个槽连接
-*/
+ */
 
 private Q_SLOTS: // private Q_SLOT // private slots:
 // 自定义connect
@@ -56,8 +57,8 @@ void on_button_exit_clicked();
 void on_button_jump_clicked();
 void on_DateButton_clicked();
 void on_DateButton_2_clicked();
-
 void on_MDialogButton_clicked();
+void on_PaintButton_clicked();
 
 private:
 int timerID1 = NULL;

@@ -12,17 +12,20 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mdialog.cpp \
-    mywindow.cpp
+    mywindow.cpp \
+    paint.cpp
 
 HEADERS += \
     mainwindow.h \
     mdialog.h \
-    mywindow.h
+    mywindow.h \
+    paint.h
 
 FORMS += \
     mainwindow.ui \
     mdialog.ui \
-    mywindow.ui
+    mywindow.ui \
+    paint.ui
 
 TRANSLATIONS += \
     hello_zh_CN.ts

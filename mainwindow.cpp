@@ -78,11 +78,12 @@ void MainWindow::on_button_exit_clicked()
     cout << qs.toLocal8Bit().toStdString().data() << endl;
 
     /*
+     * emit: 没有实际意义，为了提高代码阅读
      * Q_EMIT、emit：触发信号
      * Q_EMIT代替emit；第三方库可能会使用emit，此时可以使用Q_EMIT代替去发送信号。
      */
-    Q_EMIT my_signal();
-    emit my_signal2(QString("custom trigger my_signal2"));
+    my_signal();
+    my_signal2(QString("custom trigger my_signal2"));
 
     // qApp宏是QApplication的实例
     qApp->quit();
@@ -102,7 +103,14 @@ void MainWindow::custom_trigger_fn(const QString &qs) {
 }
 void MainWindow::on_button_jump_clicked() {
     if(child_window == nullptr) {
-        child_window = new MyWindow; // Ui::MyWindow需要引入ui_mywindow.h，而不是mywindow.h
+        /*
+         * Tips:
+         * parent == nullptr时，flags是Qt::Window；parent有值时，flags=默认的Qt::Widget(0)
+         * QWidget子组件，设置this就是一个组件，反之是一个窗口；也可以设置setWindowFlags(Qt::Window);设置为窗口
+         * D:\YXDApplication\Qt\6.4.0\Src\qtbase\src\widgets\kernel\qwidget.cpp
+         */
+        child_window = new MyWindow(); // Ui::MyWindow需要引入ui_mywindow.h，而不是mywindow.h
+        // child_window->setWindowFlags(Qt::Window);
     }
     cout << boolalpha << (typeid(*child_window) == typeid(MyWindow)) << endl;
     child_window->show();
@@ -227,23 +235,12 @@ void MainWindow::on_MDialogButton_clicked()
     connect(mdialog, SIGNAL(mdOK(const QString&)), this, SLOT(custom_trigger_fn(const QString&)));
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void MainWindow::on_PaintButton_clicked()
+{
+    if(ui->paintLayout->itemAt(0) == nullptr) {
+        Paint *p = new Paint(this);
+        ui->paintLayout->addWidget(p);
+    } else {
+        cout << "has a paint widget." << endl;
+    }
+}
