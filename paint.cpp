@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QPen>
 #include <QLinearGradient>
+#include <QDir>
 using namespace std;
 
 Paint::Paint(QWidget *parent) :
@@ -71,4 +72,23 @@ void Paint::paintEvent(QPaintEvent *event) {
     p.setWindow(0, 0, 200, 200);
     p.setViewport(100, 100, 200, 200); // viewport默认和窗口是一样大的
     p.drawLine(0, 0, 200, 200);
+    // 图片: Qt默认只支持png图片。jpg的需要添加其他库
+    p.setWindow(0, 0, 500, 200);
+    p.setViewport(0, 0, 500, 200);
+    // 设置相对路径
+    QDir::setCurrent(QCoreApplication::applicationDirPath());
+    // QDir dir; qDebug() << dir.currentPath();
+    QPixmap pixmap;
+    pixmap.load("img.png"); // 绝对路径：D://Work/QT/Hello/img.png；相对路径需要设置上面的代码
+    p.drawPixmap(10, 140, 50, 50, pixmap); // x y w h
+
+    /*
+     * Graphics View 提供了一个 QGraphicsScene 作为场景，即是我们添加图形的空间，相当于整个世界；
+     * 一个 QGraphicsView 作为视口，也就是我们观察的窗口，相当于照相机的取景框，这个取景框可以覆盖整个场景，也可以是场景的一部分；
+     * 一些 QGraphicsItem 作为图形元件，以便 scene 添加，Qt 内置了很多图形，比如 line、polygon 等，都是继承自 QGraphicsItem。
+     */
+    QGraphicsScene *scene = new QGraphicsScene;
+    ui->graphicsView->setScene(scene);
+    scene->addLine(10, 10, 100, 100);
+    ui->graphicsView->setWindowTitle("Graphics View");
 }

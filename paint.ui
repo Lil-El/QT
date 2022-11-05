@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>475</width>
-    <height>286</height>
+    <width>716</width>
+    <height>314</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,16 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
+  <widget class="QGraphicsView" name="graphicsView">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>10</y>
+     <width>311</width>
+     <height>291</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
