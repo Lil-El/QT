@@ -239,6 +239,7 @@ void MainWindow::on_PaintButton_clicked()
 {
     if(ui->paintLayout->itemAt(0) == nullptr) {
         Paint *p = new Paint(this);
+
         ui->paintLayout->addWidget(p);
     } else {
         cout << "has a paint widget." << endl;

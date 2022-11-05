@@ -51,9 +51,24 @@ void Paint::paintEvent(QPaintEvent *event) {
     t.rotate(-30.0);
     p.setWorldTransform(t);
     p.drawLine(100, 100, 300, 300);
-    // viewport and window TODO:
-    t.rotate(0);
+    // 校准
+    t.rotate(+30); // 上面减了30，这里加30，恢复初始状态
     p.setWorldTransform(t);
-    p.setWindow(-50, -50, 50, 50);
-    p.drawLine(-30, -20, 10, 20);
+    p.setPen(QPen(Qt::yellow, 3));
+    p.drawLine(0, 0, 200, 200);
+    /* viewport and window: TODO: 博客-https://www.cnblogs.com/realid/archive/2013/05/05/3061312.html
+     * 物理窗口的size：500,200
+     * setWindow(0, 0, 200, 200)：逻辑坐标，窗口的右下角（物理500,200的位置）的逻辑坐标为200,200；即使窗口被放大、缩小右下角都是200,200
+     * setViewport(0, 0, 200, 200)：指定窗体可绘制的范围，物理坐标200,200的位置的坐标为500,200；一条线的端点为500,200，实际是在200,200的物理位置上
+     * 联合使用，窗口的物理范围0,0,200,200的逻辑坐标为window的坐标
+     *         p.setWindow(0, 0, 200, 200);
+               p.setViewport(100, 100, 200, 200);
+               p.drawLine(0, 0, 200, 200);
+       划定范围100,100,200,200的物理范围；设置左上、右下的逻辑坐标为0,0和200,200
+       绘制一条0,0,200,200的线，相当于将物理范围100,100,200,200的对角线连接了起来
+     */
+    p.setPen(QPen(Qt::blue, 3));
+    p.setWindow(0, 0, 200, 200);
+    p.setViewport(100, 100, 200, 200); // viewport默认和窗口是一样大的
+    p.drawLine(0, 0, 200, 200);
 }
