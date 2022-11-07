@@ -9,14 +9,30 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    /*
+     * i18n:
+     * hello_zh_CN.ts仅仅是我们自己代码中写的文字；
+     * 如果要修改内置的弹窗等widget的文字，需要在Qt的安装目录中找到相关文件，然后进行国际化设置并加载，
+     * 【qm】 - D:\Program_Files\Qt\6.4.0\mingw_64\translations
+     * 【ts】 - D:\Program_Files\Qt\6.4.0\Src\qttranslations\translations
+     * ts 通过lrelease发布 生成 qm
+     */
+    // 自己代码中的tr()
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
-    for (const QString &locale : uiLanguages) {
+    for (const QString &locale : uiLanguages) { // locale == zh_CN
         const QString baseName = "hello_" + QLocale(locale).name();
         if (translator.load(":/i18n/" + baseName)) {
             a.installTranslator(&translator);
             break;
         }
+    }
+    // 内置widget，dialog，右键菜单等国际化
+    QTranslator translator2;
+    if (translator2.load("D:/Program_Files/Qt/6.4.0/mingw_64/translations/qt_zh_CN.qm")) {
+        a.installTranslator(&translator2);
+    } else {
+        qDebug() << "load translator file faile.";
     }
     /*
      * 不使用自定义的MainWindow对象，直接使用QMainWindow

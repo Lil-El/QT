@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusBar->setSizeGripEnabled(false);
     this->setStatusTip(tr("It's status bar."));
 
-    QAction *qa = new QAction("打开文件", this); // QAction 在ui_mainwindow.h中引入
+    QAction *qa = new QAction(tr("open file"), this); // QAction 在ui_mainwindow.h中引入
     qa->setStatusTip("获取文件路径");
     QKeySequence ks = QKeySequence(Qt::CTRL|Qt::Key_P);
     qa->setShortcut(ks); // setShortcut(s) => QKeySequence::Print ctrl+p, QKeySequence(tr("Ctrl+p"));
@@ -175,8 +175,8 @@ void MainWindow::custom_trigger_action() {
     //    }
     // 文件选择弹窗-打开方式2：constructor  => exec()结果
     QFileDialog fd(this, Qt::Drawer);
-    fd.setLabelText(QFileDialog::DialogLabel::FileName, QString("Mino Select File:"));
-    fd.setWindowTitle("打开潘多拉魔盒");
+    fd.setLabelText(QFileDialog::DialogLabel::FileName, QString(tr("Mino Select File:")));
+    fd.setWindowTitle(tr("open pandora box"));
 
     // Lambda悬空引用：引用了fd，当fd弹窗关闭之后就访问不到，程序crash；所以在关闭后要stop定时器；
     QTimer *timer = new QTimer();
