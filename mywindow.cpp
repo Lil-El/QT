@@ -81,13 +81,11 @@ void MyWindow::on_addButton_clicked()
      * begin()，end()以及其他一些非 const 容器，在数据改变时 Qt 会进行深复制。为了避免这一点，要尽可能使用 const_iterator, constBegin()和 constEnd().
      */
     QMutableListIterator<QString> i(list);
-    qDebug() << "start iterator 1: ";
     while(i.hasNext()) {
-//        QString num = i.;
-//        if(num == "+") {
-//            i.remove();
-//        }
-//        i.next();
+        QString num = i.next();
+        if(num == "+") {
+            i.remove();
+        }
     }
 
     /*
@@ -101,9 +99,10 @@ void MyWindow::on_addButton_clicked()
      * 如果我们只进行读操作，数据是不会被复制的，只有当这些需要复制的数据需要进行写操作，这些数据才会被真正的复制，而这一切都是自动进行的，也正因为这个原因，隐式数据共享有时也被称为“写时复制”。
      */
     QVector<QString>::const_iterator j = list.constBegin();
-    qDebug() << "start iterator 2: ";
     while(j != list.constEnd()) {
-        qDebug() << *j;
+        if (*j == "-") {
+            list.erase(j);
+        }
         j++;
     }
 
@@ -114,11 +113,48 @@ void MyWindow::on_addButton_clicked()
      * 第二个参数是容器
      */
     qDebug() << "start iterator 3: ";
-    foreach (QString s, list) {
+    // C++遍历
+    for(QString s : list) {
         qDebug() << s;
     }
 
-    // TODO: 遍历1删除-，遍历2删除+，遍历三输出结果
+    // Qt遍历
+    /*
+     * QMap：key是唯一的， 重复会覆盖
+     * QMultiMap：key可以重复，QList<QString> list = map.value(1); 使用list接收读个QString类型的value；
+     * QCache<K, T>来提供缓存，QSet用于仅存储 key 的情况
+     *
+     * QHash<K, T>是使用散列存储的键-值对。它的接口同 QMap<K, T>几乎一样，但是它们两个的实现需求不同。
+     * QHash<K, T>的查找速度比 QMap<K, T>快很多，并且它的存储是不排序的。
+     * 对于 QHash<K, T>而言，K 的类型必须重载了==操作符，并且必须被全局函数 qHash()所支持，这个函数用于返回 key的散列值。
+     * Qt 已经为 int、指针、QChar、QString 和 QByteArray 实现了 qHash()函数。
+     *
+     * QHash<K, T>会自动地为散列分配一个初始大小，并且在插入数据或者删除数据的时候改变散列的大小。
+     * 我们可以使用 reserve()函数扩大散列，使用 squeeze()函数将散列缩小到最小大小(这个最小大小实际上是能够存储这些数据的最小空间)。
+     * 在使用时，我们可以使用 reserve()函数将数据项扩大到我们所期望的最大值，然后插入数据，完成之后使用 squeeze()函数收缩空间。
+     *
+     * QHash<K, T>同样也是单值类型的，但是你可以使用 insertMulti()函数，或者是使用QMultiHash<K, T>类来为一个键插入多个值。
+     * 另外，除了 QHash<K, T>，Qt 也提供了 QCache<K, T>来提供缓存，QSet用于仅存储 key 的情况。这两个类同 QHash<K, T>一样具有 K 的类型限制。
+     */
+    QMap<int, QString> map;
+    int index = 0;
+    foreach (QString s, list) {
+        map.insert(index, s); // map[index] = s;
+        index++;
+    }
+
+    // QMutableMapIterator mi; mi.setValue(12);
+    // Java风格
+    QMapIterator<int, QString> mi(map);
+    while(mi.hasNext()) {
+        mi.next();
+        qDebug() << "key: " << mi.key() << " value: " << mi.value();
+    }
+    qDebug() << map.value(3, "Mino"); // 获取key=1的value，没有就输出第二个参数-默认值
+
+    // STL风格
+    foreach (int key, map.keys()) {}
+    foreach (QString value, map.values()) {}
 }
 
 
