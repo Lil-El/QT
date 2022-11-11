@@ -18,6 +18,8 @@ Q_OBJECT
 public:
 MyWindow(QWidget *parent = nullptr);
 ~MyWindow();
+void addTable(const QString &s);
+void addTree(const QString &s);
 
 private slots:
 void on_spinBox_valueChanged(int arg1);

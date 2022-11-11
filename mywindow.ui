@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>333</width>
+    <width>694</width>
     <height>358</height>
    </rect>
   </property>
@@ -39,8 +39,8 @@
   <widget class="QPushButton" name="addButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>80</y>
+     <x>310</x>
+     <y>40</y>
      <width>80</width>
      <height>24</height>
     </rect>
@@ -54,7 +54,7 @@
     <rect>
      <x>30</x>
      <y>80</y>
-     <width>171</width>
+     <width>81</width>
      <height>251</height>
     </rect>
    </property>
@@ -65,8 +65,8 @@
   <widget class="QPushButton" name="saveButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>110</y>
+     <x>400</x>
+     <y>40</y>
      <width>80</width>
      <height>24</height>
     </rect>
@@ -81,8 +81,8 @@
   <widget class="QPushButton" name="clearCacheButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>140</y>
+     <x>490</x>
+     <y>40</y>
      <width>80</width>
      <height>24</height>
     </rect>
@@ -94,8 +94,8 @@
   <widget class="QPushButton" name="loadCacheButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>170</y>
+     <x>580</x>
+     <y>40</y>
      <width>80</width>
      <height>24</height>
     </rect>
@@ -103,6 +103,31 @@
    <property name="text">
     <string>读取缓存</string>
    </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>80</y>
+     <width>321</width>
+     <height>251</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>80</y>
+     <width>171</width>
+     <height>251</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string notr="true">1</string>
+    </property>
+   </column>
   </widget>
  </widget>
  <resources/>

@@ -1,12 +1,37 @@
 #include "mywindow.h"
 #include "ui_mywindow.h"
 #include <iostream>
+#include <QDateTime>
 using namespace std;
 
 MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
 {
     ui->setupUi(this);
     this->setWindowTitle("子窗口");
+
+    // table设置
+    ui->tableWidget->setColumnCount(2);
+    QStringList header;
+    header << "Key" << "Val";
+    ui->tableWidget->setHorizontalHeaderLabels(header);
+    ui->tableWidget->setColumnWidth(0, 140);
+    ui->tableWidget->setColumnWidth(1, 60);
+
+    // 设置tree
+    ui->treeWidget->setColumnCount(2);
+    QStringList headers;
+    headers << "Key" << "Val";
+    ui->treeWidget->setHeaderLabels(headers);
+    QTreeWidgetItem *root = new QTreeWidgetItem(ui->treeWidget, QStringList("ROOT"));
+    QTreeWidgetItem *root2 = new QTreeWidgetItem(ui->treeWidget, QStringList("NUMS"));
+    QTreeWidgetItem *leaf = new QTreeWidgetItem(root, QStringList("Leaf 1"));
+    root->addChild(leaf);
+    QTreeWidgetItem *leaf2 = new QTreeWidgetItem(root, QStringList(QString("Leaf 2")));
+    leaf2->setCheckState(0, Qt::Checked);
+    root->addChild(leaf2);
+    QList<QTreeWidgetItem *> rootList;
+    rootList << root << root2;
+    ui->treeWidget->insertTopLevelItems(0, rootList);
 }
 
 MyWindow::~MyWindow() {
@@ -153,8 +178,13 @@ void MyWindow::on_addButton_clicked()
     qDebug() << map.value(3, "Mino"); // 获取key=1的value，没有就输出第二个参数-默认值
 
     // STL风格
-    foreach (int key, map.keys()) {}
-    foreach (QString value, map.values()) {}
+    foreach (int key, map.keys()) {
+    }
+    foreach (QString value, map.values()) {
+    }
+
+    this->addTable(num);
+    this->addTree(num);
 }
 
 
@@ -174,3 +204,24 @@ void MyWindow::on_loadCacheButton_clicked()
 {
 }
 
+void MyWindow::addTable(const QString &str) {
+    int rowCount = ui->tableWidget->rowCount();
+    ui->tableWidget->setRowCount(rowCount + 1);
+    QDateTime dt(QDateTime::currentDateTime());
+    ui->tableWidget->setItem(rowCount, 0, new QTableWidgetItem(dt.toString(QString("yyyy-MM-dd hh:mm:ss"))));
+    ui->tableWidget->setItem(rowCount, 1, new QTableWidgetItem(str));
+}
+
+void MyWindow::addTree(const QString &str) {
+    int rootCount = ui->treeWidget->topLevelItemCount();
+    for (int idx = 0; idx < rootCount; ++idx) {
+        QTreeWidgetItem *root = ui->treeWidget->topLevelItem(idx);
+        QString rootText = root->text(0);
+        if(rootText == "NUMS") {
+            QStringList list;
+            list << "Mino" << str;
+            QTreeWidgetItem *leaf = new QTreeWidgetItem(root, list);
+            root->addChild(leaf);
+        }
+    }
+}
