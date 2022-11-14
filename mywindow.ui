@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>694</width>
+    <width>1139</width>
     <height>358</height>
    </rect>
   </property>
@@ -54,7 +54,7 @@
     <rect>
      <x>30</x>
      <y>80</y>
-     <width>81</width>
+     <width>141</width>
      <height>251</height>
     </rect>
    </property>
@@ -107,9 +107,9 @@
   <widget class="QTableWidget" name="tableWidget">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>380</x>
      <y>80</y>
-     <width>321</width>
+     <width>281</width>
      <height>251</height>
     </rect>
    </property>
@@ -117,7 +117,7 @@
   <widget class="QTreeWidget" name="treeWidget">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>190</x>
      <y>80</y>
      <width>171</width>
      <height>251</height>
@@ -128,6 +128,56 @@
      <string notr="true">1</string>
     </property>
    </column>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>0</y>
+     <width>31</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="mkdirButton">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>10</y>
+     <width>80</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>添加</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="rmdirButton">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>10</y>
+     <width>80</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>删除</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>40</y>
+     <width>431</width>
+     <height>301</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="dirLayout"/>
   </widget>
  </widget>
  <resources/>

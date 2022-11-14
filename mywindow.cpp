@@ -2,6 +2,9 @@
 #include "ui_mywindow.h"
 #include <iostream>
 #include <QDateTime>
+#include <QModelIndex>
+#include <QInputDialog>
+#include <QMessageBox>
 using namespace std;
 
 MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
@@ -32,6 +35,9 @@ MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
     QList<QTreeWidgetItem *> rootList;
     rootList << root << root2;
     ui->treeWidget->insertTopLevelItems(0, rootList);
+
+    // Dir
+    this->initDirModel();
 }
 
 MyWindow::~MyWindow() {
@@ -225,3 +231,100 @@ void MyWindow::addTree(const QString &str) {
         }
     }
 }
+
+/*
+ * QDirModel 在最新版 Qt 中已经不建议使用了。文档中说使用 QFileSystemModel 代替。
+ * 由于这两者的函数几乎一样，所以就没有对代码进行修改。
+ * 与QDirModel不同的是，QFileSystemModel会启动自己的线程进行文件夹的扫描，因此不会发生因扫描文件夹而导致的主线程阻塞的现象。
+ * 另外，无论 QDirModel还是QFileSystemModel都会对model结果进行缓存，如果你要立即刷新结果，前者提供了refresh()函数，而后者会通知QFileSystemWatcher类。
+*/
+void MyWindow::initDirModel() {
+    model = new QFileSystemModel();
+//    排序的依据也很清楚：文件夹优先(QDir::DirsFirst)，忽略大小写(QDir::IgnoreCase)，而且是根据名字排序(QDir::Name)。更多的规则组合可以参见 API 文档了
+//    model->sort();
+    /*
+     * MVC：model-view架构
+     * 上面是QTreeWidget，基于Item
+     * QTreeView，基于Model；Model可以同时传给多个View
+     *
+     * 在少量数据的情形下，我们不需要动用 model 这样重量级的组件。
+     * Qt 为了方便起见也提供了 item view 类，分别是 QListWidget，QTableWidget 和 QTreeWidget，使用这些类可以直接对 item 进行操作。
+     * 对于很大的数据，我们则需要使用 Qt 的 view 类，比如 QListView，QTabelView 和 QTreeView，同时需要提供一个 model，可以是自定义 model，也可以是 Qt 预置的model。
+     * 如果数据来自数据库，那么你可以使用 QTabelView 和 QSqlTableModel 这两个类。
+     */
+    tree = new QTreeView();
+
+    model->setReadOnly(false);
+    model->setRootPath(QDir::currentPath()); // Qt Project debug directory
+
+    tree->setModel(model);
+    tree->header()->setStretchLastSection(true); // 分配剩余空间
+    tree->header()->setSortIndicator(0, Qt::AscendingOrder); // 第一列（名称）排序 Qt::AscendingOrder/Qt::DescendingOrder
+    tree->header()->setSortIndicatorShown(true); // 设置排序指示器显示
+
+    QModelIndex index = model->index(QDir::currentPath()); // 寻找目录的index，然后展开并滚动至index的位置
+    tree->expand(index);
+    tree->scrollTo(index);
+    tree->resizeColumnToContents(0); // 让列和目录的名称长度一样宽
+
+    ui->dirLayout->addWidget(tree);
+
+    connect(ui->mkdirButton, SIGNAL(clicked()), this, SLOT(on_mkdir()));
+    connect(ui->rmdirButton, SIGNAL(clicked()), this, SLOT(on_rmdir()));
+}
+
+void MyWindow::on_mkdir() {
+    QModelIndex index = this->tree->currentIndex();
+    if (!index.isValid()) {
+        qDebug() << "index is not valid.";
+        return;
+    }
+    QString dirName = QInputDialog::getText(this, "创建", "名称");
+    if (!dirName.isEmpty()) {
+        if (!model->mkdir(index, dirName).isValid()) {
+            QMessageBox::information(this, "About", "Failed to create the dir.");
+        }
+    }
+}
+
+void MyWindow::on_rmdir() {
+    QModelIndex index = tree->currentIndex();
+    if (!index.isValid()) {
+        return;
+    }
+    bool ok;
+    if (model->fileInfo(index).isDir()) {
+        ok = model->rmdir(index);
+    } else {
+        ok = model->remove(index);
+    }
+    if (!ok) {
+        QMessageBox::information(this, "Remove", tr("Failed to remove %1").arg(model->fileName(index)));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
