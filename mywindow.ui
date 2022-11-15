@@ -172,12 +172,22 @@
    <property name="geometry">
     <rect>
      <x>700</x>
-     <y>40</y>
+     <y>70</y>
      <width>431</width>
-     <height>301</height>
+     <height>271</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="dirLayout"/>
+  </widget>
+  <widget class="QLineEdit" name="searchInput">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>40</y>
+     <width>431</width>
+     <height>23</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>

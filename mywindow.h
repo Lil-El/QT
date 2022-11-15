@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QFileSystemModel>
 #include <QTreeView>
+#include <QSortFilterProxyModel>
 
 // 在ui文件中修改顶级Widget的name
 QT_BEGIN_NAMESPACE
@@ -34,11 +35,14 @@ void on_loadCacheButton_clicked();
 void on_mkdir();
 void on_rmdir();
 
+void on_searchInput_textChanged(const QString &arg1);
+
 private:
 Ui::MyWindow *ui;
 QVector<QString> list;
 QFileSystemModel *model;
 QTreeView *tree;
+QSortFilterProxyModel *modelProxy;
 };
 
 #endif // MYWINDOW_H

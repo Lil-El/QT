@@ -5,6 +5,7 @@
 #include <QModelIndex>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QRegularExpression>
 using namespace std;
 
 MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
@@ -38,6 +39,11 @@ MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
 
     // Dir
     this->initDirModel();
+
+    // QSortFilterProxyModel：正则过滤-代理model
+    modelProxy = new QSortFilterProxyModel(this);
+    modelProxy->setSourceModel(model);
+    modelProxy->setFilterKeyColumn(0);
 }
 
 MyWindow::~MyWindow() {
@@ -101,6 +107,8 @@ void MyWindow::on_addButton_clicked()
      */
     QString num = QString::number(ui->spinBox->value(), 10);
     ui->list->addItem(num);
+
+    // QVector操作
     this->list << "-";
     this->list.append(num);
     this->list << "+";
@@ -303,28 +311,12 @@ void MyWindow::on_rmdir() {
     }
 }
 
+void MyWindow::on_searchInput_textChanged(const QString &text)
+{
+    // 因为设置proxy之后，tree无法展开currentPath，所以setModel设置到这里。在不需要搜索时，设置为setModel(model)
+    this->tree->setModel(modelProxy);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    QRegularExpression regexp(text);
+    modelProxy->setFilterRegularExpression(regexp);
+}
 
