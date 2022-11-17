@@ -6,6 +6,7 @@
 #include <QFileSystemModel>
 #include <QTreeView>
 #include <QSortFilterProxyModel>
+#include <currencymodel.h>>
 
 // 在ui文件中修改顶级Widget的name
 QT_BEGIN_NAMESPACE

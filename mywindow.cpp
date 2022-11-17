@@ -44,6 +44,15 @@ MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
     modelProxy = new QSortFilterProxyModel(this);
     modelProxy->setSourceModel(model);
     modelProxy->setFilterKeyColumn(0);
+
+    // tableModel/tableView
+   QMap<QString, double> data;
+   data["NOK"] = 1.0;
+   data["NZD"] = 2.0;
+   data["SEK"] = 3.0;
+   CurrencyModel *currencyModel = new CurrencyModel();
+   currencyModel->setCurrencyMap(data);
+   ui->tableView->setModel(currencyModel);
 }
 
 MyWindow::~MyWindow() {
