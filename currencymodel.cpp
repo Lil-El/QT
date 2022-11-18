@@ -40,6 +40,26 @@ QVariant CurrencyModel::headerData(int section, Qt::Orientation orientation, int
     return currencyAt(section);
 }
 
+bool CurrencyModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (index.isValid() && index.row() != index.column() && role == Qt::EditRole) {
+        currencyMap["SEK"] = value.toInt();
+        emit dataChanged(index, index);
+        return true;
+    }
+    return false;
+}
+
+// 允许item编辑
+Qt::ItemFlags CurrencyModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags flags = QAbstractItemModel::flags(index);
+    if (index.row() != index.column()) {
+        flags |= Qt::ItemIsEditable; // ItemFlag
+    }
+    return flags;
+}
+
 void CurrencyModel::setCurrencyMap(const QMap<QString, double> &map)
 {
     currencyMap = map;
