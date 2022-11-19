@@ -207,7 +207,17 @@
     <rect>
      <x>10</x>
      <y>370</y>
-     <width>241</width>
+     <width>501</width>
+     <height>261</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget2">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>370</y>
+     <width>611</width>
      <height>261</height>
     </rect>
    </property>

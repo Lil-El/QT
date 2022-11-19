@@ -53,6 +53,28 @@ MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
    CurrencyModel *currencyModel = new CurrencyModel();
    currencyModel->setCurrencyMap(data);
    ui->tableView->setModel(currencyModel);
+
+   // 自定义委托-Delegate；相对于其他的就是多一行setItemDelegate，其他一样
+   QList<Track> tracks;
+   Track t1("Mino1", 200);
+   Track t2("Song 2", 150);
+   Track t3("Song 3", 120);
+   Track t4("Song 4", 210);
+   tracks << t1 << t2 << t3 << t4;
+   ui->tableWidget2->setColumnCount(2);
+   ui->tableWidget2->setRowCount(tracks.count());
+   ui->tableWidget2->setItemDelegate(new TrackDelegate(1));
+   ui->tableWidget2->setHorizontalHeaderLabels(QStringList() << "Track" << "Duration");
+   for (int row = 0; row < tracks.count(); ++row) {
+       Track track = tracks.at(row);
+
+       QTableWidgetItem *item0 = new QTableWidgetItem(track.title);
+       ui->tableWidget2->setItem(row, 0, item0);
+
+       QTableWidgetItem *item1 = new QTableWidgetItem(QString::number(track.duration));
+       item1->setTextAlignment(Qt::AlignRight);
+       ui->tableWidget2->setItem(row, 1, item1);
+   }
 }
 
 MyWindow::~MyWindow() {

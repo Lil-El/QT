@@ -14,14 +14,18 @@ SOURCES += \
     mainwindow.cpp \
     mdialog.cpp \
     mywindow.cpp \
-    paint.cpp
+    paint.cpp \
+    track.cpp \
+    trackdelegate.cpp
 
 HEADERS += \
     currencymodel.h \
     mainwindow.h \
     mdialog.h \
     mywindow.h \
-    paint.h
+    paint.h \
+    track.h \
+    trackdelegate.h
 
 FORMS += \
     mainwindow.ui \
