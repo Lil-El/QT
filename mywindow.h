@@ -27,6 +27,8 @@ MyWindow(QWidget *parent = nullptr);
 void addTable(const QString &s);
 void addTree(const QString &s);
 void initDirModel();
+void studyString();
+void studyVariant();
 
 private slots:
 void on_spinBox_valueChanged(int arg1);

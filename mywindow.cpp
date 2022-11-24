@@ -8,6 +8,15 @@
 #include <QRegularExpression>
 using namespace std;
 
+class Fruit {
+public:
+    Fruit() {
+        cout << "create a fruit." << endl;
+    };
+};
+// Variant除了Qt和通用的数据类型外，也可以使用自定义的类型
+Q_DECLARE_METATYPE(Fruit)
+
 MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
 {
     ui->setupUi(this);
@@ -75,10 +84,50 @@ MyWindow::MyWindow(QWidget *parent) : QWidget(parent), ui(new Ui::MyWindow)
        item1->setTextAlignment(Qt::AlignRight);
        ui->tableWidget2->setItem(row, 1, item1);
    }
+
+   // QString
+   this->studyString();
+   // Variant
+   this->studyVariant();
 }
 
 MyWindow::~MyWindow() {
     delete ui;
+}
+
+void MyWindow::studyString() {
+    QString str = "%1";
+    str += " is a %2";
+    str.append('!');
+    qDebug() << "QString: " << str << str.arg("Mino").arg("boy");
+    qDebug() << str.mid(0, 4);
+    qDebug() << str;
+    qDebug() << QString::number(23.5);
+    qDebug() << str.setNum(12);
+    qDebug() << str.toFloat();
+}
+
+/*
+ * Java 是单根的，而 C++不是。Java中Integer和Float类型等都继承自Object类
+ * C++中只能创建一个大的Object，保存所有数据类型。即：QVariant
+ * QVariant 可以保存很多 Qt 的数据类型，包括 QBrush、QColor、QCursor、QDateTime、QFont、QKeySequence、QPalette、QPen、QPixmap、QPoint、QRect、QRegion、QSize 和 QString，并且还有 C++基本类型，如 int、float 等。
+ * QVariant 还能保存很多集合类型，如 QMap<QString, QVariant>, QStringList 和 QList。
+ * item view classes，数据库模块和 QSettings 都大量使用了 QVariant 类，以方便我们读写数据。
+ * QVariant 也可以进行嵌套存储，
+*/
+void MyWindow::studyVariant() {
+    QMap<QString, QVariant> pearMap;
+    QMap<QString, QVariant> fruitMap;
+    pearMap["Standard"] = 1.95;
+    pearMap["Organic"] = 2.25;
+    fruitMap["Pear"] = pearMap;
+    qDebug() << pearMap.value("Standard");
+
+    Fruit fruit;
+    QVariant fruitCopy = QVariant::fromValue(fruit);
+    if (fruitCopy.canConvert<Fruit>()) {
+        Fruit fruit2 = fruitCopy.value<Fruit>();
+    }
 }
 
 void MyWindow::on_spinBox_valueChanged(int val)
