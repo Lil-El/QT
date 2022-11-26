@@ -60,6 +60,8 @@ void on_DateButton_2_clicked();
 void on_MDialogButton_clicked();
 void on_PaintButton_clicked();
 
+void on_pushButton_clicked();
+
 private:
 int timerID1 = NULL;
 QTimer *timerID2 = nullptr;

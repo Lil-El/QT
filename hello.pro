@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     currencymodel.cpp \
+    dnd.cpp \
     main.cpp \
     mainwindow.cpp \
     mdialog.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     currencymodel.h \
+    dnd.h \
     mainwindow.h \
     mdialog.h \
     mywindow.h \
@@ -28,6 +30,7 @@ HEADERS += \
     trackdelegate.h
 
 FORMS += \
+    dnd.ui \
     mainwindow.ui \
     mdialog.ui \
     mywindow.ui \

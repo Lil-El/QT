@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 // 对Ui::MainWindow定义，在编译时会mainwindow.ui编译为ui_*.h文件
 #include "ui_mainwindow.h"
+#include "dnd.h"
 #include <iostream>
 #include <QTimer>
 #include <QDateTime>
@@ -245,3 +246,11 @@ void MainWindow::on_PaintButton_clicked()
         cout << "has a paint widget." << endl;
     }
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    dnd *d1 = new dnd(this);
+    d1->setWindowFlags(Qt::Window);
+    d1->show();
+}
+
