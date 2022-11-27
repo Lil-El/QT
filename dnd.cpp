@@ -2,6 +2,7 @@
 #include "ui_dnd.h"
 #include <QMimeData>
 #include <QFile>
+#include <QClipboard>
 
 dnd::dnd(QWidget *parent) : QWidget(parent), ui(new Ui::Dnd)
 {
@@ -65,3 +66,18 @@ bool dnd::readFile(const QString &fileName) {
 
     return true;
 }
+
+void dnd::on_pushButton_clicked()
+{
+    QClipboard *board = QApplication::clipboard();
+    board->setText("Text from Qt Application");
+}
+
+
+void dnd::on_pushButton_2_clicked()
+{
+    QClipboard *board = QApplication::clipboard();
+    QString str = board->text();
+    ui->textEdit->append(str);
+}
+
